@@ -30,8 +30,8 @@ If you wanted to establish your own collection of exercise, you could:
 
 * Write a list of exercises.  See "purist.list" as an example of format.
 * `perl convert.pl my_exercise.list > my_exercises.sql`
-* `sqlite3 < exercise_tables.sql`
-* `sqlite3 < my_exercises.sql`
+* `sqlite3 my_exercises.db < exercise_tables.sql`
+* `sqlite3 my_exercises.db < my_exercises.sql`
 * Edit Exercise.pm to change the $data_file variable from 'purist.db' to
 'my_exercises.db'
 
