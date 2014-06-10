@@ -39,10 +39,14 @@ if (scalar(@gear))
   }
 }
 
-my $mission =
-  $cal
-  ? calisthenics_mission(@gear)
-  : standard_mission(@gear);
+my $mission = undef;
+
+if ( $cal )
+{
+  $mission = calisthenics_mission('none');
+} else {
+  $mission = standard_mission(@gear) // calisthenics_mission(@gear);
+}
 
 if (defined($mission))
 {

@@ -19,7 +19,7 @@ bit about sql and create a simple exercise routine generator.
 # same names and links to instruction that is as close as possible to
 # the source.
 
-my $data_file = 'purist.db';
+my $data_file = 'fitocrat.db';
 my ($vol, $dir, $self) = File::Spec->splitpath(abs_path(__FILE__));
 my $database = abs_path($dir . '/' . $data_file);
 my $dbh = DBI->connect("dbi:SQLite:dbname=$database", "", "")
