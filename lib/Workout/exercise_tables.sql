@@ -6,17 +6,17 @@ CREATE TABLE gear
   name TEXT UNIQUE NOT NULL 
 );
 
-CREATE TABLE class
+CREATE TABLE focus
 (
   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   name TEXT UNIQUE NOT NULL
 );
 
-CREATE TABLE exercises
+CREATE TABLE exercise
 (
   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   name TEXT UNIQUE NOT NULL,
-  class INTEGER NOT NULL,
+  focus INTEGER NOT NULL,
   url TEXT
 );
 
@@ -24,7 +24,7 @@ CREATE TABLE exercise_gear
 (
   exercise_id INTEGER NOT NULL,
   gear_id INTEGER NOT NULL,
-  FOREIGN KEY(exercise_id) REFERENCES exercises(id) ON DELETE CASCADE,
+  FOREIGN KEY(exercise_id) REFERENCES exercise(id) ON DELETE CASCADE,
   FOREIGN KEY(gear_id) REFERENCES gear(id) ON DELETE CASCADE
 );
 
@@ -38,11 +38,11 @@ BEGIN TRANSACTION;
 END TRANSACTION;
 
 BEGIN TRANSACTION;
-  INSERT INTO class (name) VALUES ('pull-up');
-  INSERT INTO class (name) VALUES ('push-up');
-  INSERT INTO class (name) VALUES ('wheel-house');
-  INSERT INTO class (name) VALUES ('abs');
-  INSERT INTO class (name) VALUES ('assist');
-  INSERT INTO class (name) VALUES ('grip');
-  INSERT INTO class (name) VALUES ('neck');
+  INSERT INTO focus (name) VALUES ('pull-up');
+  INSERT INTO focus (name) VALUES ('push-up');
+  INSERT INTO focus (name) VALUES ('wheel-house');
+  INSERT INTO focus (name) VALUES ('abs');
+  INSERT INTO focus (name) VALUES ('assist');
+  INSERT INTO focus (name) VALUES ('grip');
+  INSERT INTO focus (name) VALUES ('neck');
 END TRANSACTION;

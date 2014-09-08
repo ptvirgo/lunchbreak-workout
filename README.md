@@ -1,13 +1,16 @@
 corps-strength
 ==============
 
-A simple tool to generate workout missions in accordance with the book "Corps Strength" by MGySgt Paul J. Roarke Jr.
+A simple tool to generate workout missions in accordance with the book "Corps
+Strength" by MGySgt Paul J. Roarke Jr. See www.corpsstrength.com for further
+information.
+
+I am in no way associated with the author, though he seems pretty cool.
 
 # About
 
-This is a very simple, procedural script.  I wrote it to learn a bit
-about SQL and relational databases, as well as make my lunch breaks
-healthier.  
+This is a very simple command line script.  I wrote it to learn a bit about SQL
+and relational databases, as well as make my lunch breaks healthier.
 
 The Corps Strength version is intended to be fairly strict
 interpretation of the routine format specified in the original book.  It
@@ -17,10 +20,9 @@ on a fork to keep the purist in me happy.
 
 # Setup notes
 
-The lib/Strength directory contains:
+In addition to the libraries, lib/Workout directory contains:
 
 * Required database(s)
-* A simple Exercise.pm library that accesses the required databases
 * exercise_tables.sql, which configures empty tables expected by the
   library and script.
 * convert.pl:  point this at a '|' separated list of exercises and
@@ -32,8 +34,8 @@ If you wanted to establish your own collection of exercise, you could:
 * `perl convert.pl my_exercise.list > my_exercises.sql`
 * `sqlite3 my_exercises.db < exercise_tables.sql`
 * `sqlite3 my_exercises.db < my_exercises.sql`
-* Edit Exercise.pm to change the $data_file variable from 'purist.db' to
-'my_exercises.db'
+* Edit Workout.pm and Workout/Exercise.pm to change the $data_file variable from
+  'purist.db' to 'my_exercises.db'
 
 # URLS
 
