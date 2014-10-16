@@ -21,6 +21,24 @@ my $DBH = DBI->connect("dbi:SQLite:dbname=$database", "", "")
 
 =cut
 
+=head1 new ( gear => \@gear, calisthenics => boolean );
+
+Parameters:
+
+  gear => an array reference containing names of exercise equipment as can be
+  found in the database.
+
+  calisthenics => interpreted as a boolean.  If true, the workout will
+specifically take the format of the calisthenics routines from the Corps
+Strength book.
+
+Returns:
+
+  Blessed hash reference including the gear and calisthenics values, as well as
+a mission key to a string describing the workout.
+
+=cut
+
 sub new
 {
   my $class = shift;
