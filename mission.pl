@@ -33,7 +33,7 @@ if ($list)
 
 if (scalar(@gear))
 {
-  if (!grep(m/'none'/, @gear))
+  if (!grep(m/none/, @gear))
   {
     push(@gear, 'none');
   }
@@ -51,7 +51,7 @@ my $title = $workout->{'calisthenics'}
   : "Standard Mission";
 
 print "# $title\n\n";
-print $workout->{'mission'};
+print $workout->mission( format => 'markdown' );
 
 =head1 Functions
 

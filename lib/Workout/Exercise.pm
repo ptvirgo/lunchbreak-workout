@@ -136,4 +136,50 @@ SQL
   }
 }
 
+=head2 link( format => 'markdown' or 'html' )
+
+Parameters
+
+  Optional 'format' argument can be used to request simple markdown
+(default) or html formatting.  One might expect html to be the default
+option for a link, however the parent library defaults to markdown for
+other types of output and I've opted to be consistant rather than purely
+"logical."
+
+Returns
+  A string consisting of the name of the exercise encapsulated in a
+markdown or html type link if the url attribute has been defined.
+
+=cut
+
+sub link
+{
+  my $self = shift;
+  my %args = @_;
+
+  my $link;
+
+  if ( !defined ($self->{'url'} ) )
+  {
+    $link = $self->{'name'};
+  } elsif (
+    !defined ( $args{'format'} )
+    ||
+    lc( $args{'format'} ) eq 'markdown'
+  )
+  {
+    $link = "[$self->{'name'}]($self->{'url'})";
+  } elsif ( lc( $args{'format'} ) eq 'html' ) {
+    $link =
+      '<a href = "'. $self->{'url'} . '">' .
+      $self->{'name'} .
+      '</a>';
+  } else {
+    die "Invalid format requested.";
+  }
+
+  return $link;
+}
+
+
 1;

@@ -68,11 +68,18 @@ sub new
 
   $self->{'gear'} = \@gear;
 
-  my $mission = $calisthenics
-    ? $self->_calisthenics_mission()
-    : $self->_standard_mission() // $self->_calisthenics_mission();
-
-  $self->{'mission'} = $mission;
+  my @exercises;
+  if ( $calisthenics )
+  {
+    @exercises = $self->_calisthenics_mission();
+  } else {
+    @exercises = $self->_standard_mission();
+    if ( !@exercises )
+    {
+      @exercises = $self->_calisthenics_mission();
+    }
+  }
+  $self->{'exercises'} = \@exercises;
 
   return $self;
 }
@@ -108,6 +115,89 @@ sub list_gear
   return @verified;
 }
 
+=head2 mission( format => ( 'markdown' or 'html' )
+
+Parameters
+
+  Optional 'format' argument can be used to request simple markdown
+(default) or html formatting.
+
+Returns
+  A string describing the actual workout mission.
+
+=cut
+
+sub mission
+{
+  my $self = shift;
+  my %args = @_;
+
+  if (
+    !defined( $args{'format'} )
+    ||
+    lc( $args{'format'} ) eq 'markdown'
+    )
+  {
+    return $self->_mission_markdown();
+  } elsif ( lc( $args{'format'} ) eq 'html' )
+  {
+    return $self->_mission_html();
+  } else {
+    die ("Invalid format requested");
+  }
+
+}
+
+sub _mission_html
+{
+  my $self = shift;
+  my $mission;
+
+  if ( $self->{'calisthenics'} )
+  {
+    $mission = sprintf
+      "<ul>\n" .
+      "<li>%s (10 x 3), %s (25 x 3), %s (50 x3)</li>\n" .
+      "<li>%s (10 x 3), %s (25 x 3), %s (50 x3)</li>\n" .
+      "</ul>\n",
+      map {  $_->link( format => 'html' ) } @{ $self->{'exercises'} };
+  } else {
+    $mission = sprintf
+      "<ul>\n" .
+      "<li>%s (10 x 3), alternate with %s (25 x 3)</li>\n" .
+      "<li>%s (10-15 x 3), alternate with %s (50 x 3)</li>\n" .
+      "<li>%s (10-15 x 3), alternate with %s (50 x 3)</li>\n" .
+      "<li>%s (Max x 2), alternate with %s (50)</li>\n" .
+      "</ul>",
+      map {  $_->link( format => 'html' ) } @{ $self->{'exercises'} };
+  }
+
+  return $mission;
+}
+
+sub _mission_markdown
+{
+  my $self = shift;
+  my $mission;
+
+  if ( $self->{'calisthenics'} )
+  {
+    $mission = sprintf
+      "1. %s (10 x 3),\n   %s (25 x 3),\n   %s (50 x 3)\n" .
+      "2. %s (25 x 3),\n   %s (10 x 3),\n   %s (50 x 3)\n",
+       map { $_->{'name'} } @{ $self->{'exercises'} };
+  } else {
+    $mission = sprintf
+      "1. %s (10 x 3), alternate with %s (25 x 3)\n" .
+      "2. %s (10-15 x 3), alternate with %s (50 x 3)\n" .
+      "3. %s (10-15 x 3), alternate with %s (50 x 3)\n" .
+      "4. %s (Max x 2), alternate with %s (50)\n",
+       map { $_->{'name'} } @{ $self->{'exercises'} };
+  }
+
+  return $mission;
+}
+
 =head2 _neck_or_grip()
 
 
@@ -126,7 +216,7 @@ sub _neck_or_grip
 =head2 _standard_mission()
 
 Returns
-  Text describing a sample mission set using the gear limitations of the
+  Array refrence of exercise objects fitting the gear limitations of the
 workout, or without limitations if the workout does not call for such
 limitations.  Uses the standard mission formula as described by the
 Corps Strength book.
@@ -144,12 +234,7 @@ sub _standard_mission
   if ( scalar(@set) == scalar(@foci) )
   {
     $self->{'calisthenics'} = 0;
-    return sprintf
-      "1. %s (10 x 3), alternate with %s (25 x 3)\n" .
-      "2. %s (10-15 x 3), alternate with %s (50 x 3)\n" .
-      "3. %s (10-15 x 3), alternate with %s (50 x 3)\n" .
-      "4. %s (Max x 2), alternate with %s (50)\n",
-      map { $_->{'name'} } @set;
+    return @set;
   } else {
     return;
   }
@@ -158,7 +243,7 @@ sub _standard_mission
 =head2 _calisthenics_mission()
 
 Returns
-  Text describing a sample mission set using the gear limitations of the
+  Array reference of exercise objects fitting the gear limitations of the
 workout, or without limitations if the workout does not call for such
 limitations.  Uses the calisthenics mission formula as described by the
 Corps Strength book.
@@ -175,10 +260,7 @@ sub _calisthenics_mission
   if ( scalar(@set) == scalar(@foci) )
   {
     $self->{'calisthenics'} = 1;
-    return sprintf
-      "1. %s (10 x 3),\n   %s (25 x 3),\n   %s (50 x 3)\n" .
-      "2. %s (25 x 3),\n   %s (10 x 3),\n   %s (50 x 3)\n",
-      map { $_->{'name'} } @set;
+    return @set;
   } else {
     return;
   }
