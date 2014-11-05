@@ -272,18 +272,21 @@ sub _random_set
   my @foci = @_;
 
   my @set;
+  my @used_ids;
 
   for my $focus (@foci)
   {
     my $exercise =
       Workout::Exercise->random(
         focus => $focus,
-        gear  => $self->{'gear'}
+        gear  => $self->{'gear'},
+        exclude => \@used_ids,
       );
 
     if (defined($exercise))
     {
       push (@set, $exercise);
+      push (@used_ids, $exercise->{'id'});
     } else {
       return;
     }

@@ -75,6 +75,9 @@ Corps-Strength book, such as push-up, wheel-house, assist, etc.
   gear => an array reference containing names of exercise equipment as can be
 found in the database.
 
+  exclude => an array reference containing numeric ids of exercises to
+be excluded from consideration.
+
 Returns
 
   An exercise object, randomly chosen, limited to the focus and equipment as
@@ -94,6 +97,12 @@ sub random
     @gear = @{ $args{'gear'} };
   }
 
+  my @exclude;
+  if ( defined ( $args{'exclude'} ) )
+  {
+    @exclude = @{ $args{'exclude'} };
+  }
+
   my $where = '';
 
   if ($focus)
@@ -108,7 +117,16 @@ sub random
     : 'AND';
 
     my $identifier = "('" . join ("', '", @gear) . "')";
-    $where .= "$clause gear.name in $identifier\n";
+    $where .= "$clause gear.name IN $identifier\n";
+  }
+
+  if ( scalar(@exclude) )
+  {
+    my $clause = ( $where eq '' )
+    ? 'WHERE'
+    : 'AND';
+    my $identifier = "('" . join ("', '", @exclude) . "')";
+    $where .= "$clause exercise.id NOT IN $identifier\n";
   }
 
   my $search = << "SQL"

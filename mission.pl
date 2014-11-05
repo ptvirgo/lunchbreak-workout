@@ -51,7 +51,7 @@ my $title = $workout->{'calisthenics'}
   : "Standard Mission";
 
 print "# $title\n\n";
-print $workout->mission( format => 'markdown' );
+print $workout->mission();
 
 =head1 Functions
 
