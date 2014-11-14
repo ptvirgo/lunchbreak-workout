@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= $title %></title>
+  <link rel="stylesheet" type="text/css" href="/style/workout.css">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <% for my $link (@{ $navigation }) { %>
+      <li><a href="/<%= lc($link) %>"><%= ucfirst($link) %></a></li>
+      <% } %>
+    </ul>
+  </nav>
+  <div id="content">
+    <h1><%= $title %></h1>
+    <%== $content %>
+  </div>
+  <footer>2014 &copy; Pablo Virgo</footer>
+</body>
+</html>
