@@ -12,10 +12,10 @@
       <li><a href="/">Home</a></li>
     </ul>
   </nav>
-  <div id="content">
+  <main>
     <h1><%= $title %></h1>
     <p>There is no such page. Maybe stick to the links that work.</p>
-  </div>
+  </main>
   <footer>2014 &copy; Pablo Virgo</footer>
 </body>
 </html>

@@ -13,10 +13,10 @@
       <% } %>
     </ul>
   </nav>
-  <div id="content">
+  <main>
     <h1><%= $title %></h1>
     <%== $content %>
-  </div>
+  </main>
   <footer>2014 &copy; Pablo Virgo</footer>
 </body>
 </html>
