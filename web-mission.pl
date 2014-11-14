@@ -22,7 +22,7 @@ HTML
   ;
 
   $c->stash(
-    title     => 'Mission Generator',
+    title     => 'Workout Generator',
     content   => $content,
   );
   $c->render('index');
