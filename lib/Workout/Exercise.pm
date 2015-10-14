@@ -52,20 +52,20 @@ SELECT exercise.id AS id,
     exercise.url AS url
 FROM exercise
 JOIN focus on exercise.focus = focus.id
-WHERE exercise.id = '$id'
+WHERE exercise.id = ?
 LIMIT 1
 SQL
   ;
 
   my $sth = $DBH->prepare($search);
-  $sth->execute();
+  $sth->execute( $id );
   my $self = $sth->fetchrow_hashref();
 
   bless $self, $class;
   return $self;
 }
 
-=head2 random( focus => exercise_type, gear => \@equipment_list );
+=head2 random( focus => exercise_type, gear => \@equipment_list, exclude => \@exercise_ids);
 
 Parameters
 
@@ -154,50 +154,61 @@ SQL
   }
 }
 
-=head2 link( format => 'markdown' or 'html' )
+=head2 list_gear()
 
-Parameters
-
-  Optional 'format' argument can be used to request simple markdown
-(default) or html formatting.  One might expect html to be the default
-option for a link, however the parent library defaults to markdown for
-other types of output and I've opted to be consistant rather than purely
-"logical."
-
-Returns
-  A string consisting of the name of the exercise encapsulated in a
-markdown or html type link if the url attribute has been defined.
+Return all the names listed in the gear table, so you can discover all possible
+gear options.
 
 =cut
 
-sub link
+sub list_gear
 {
   my $self = shift;
-  my %args = @_;
 
-  my $link;
+  my $sth = $DBH->prepare('SELECT name FROM gear');
+  $sth->execute();
 
-  if ( !defined ($self->{'url'} ) )
-  {
-    $link = $self->{'name'};
-  } elsif (
-    !defined ( $args{'format'} )
-    ||
-    lc( $args{'format'} ) eq 'markdown'
-  )
-  {
-    $link = "[$self->{'name'}]($self->{'url'})";
-  } elsif ( lc( $args{'format'} ) eq 'html' ) {
-    $link =
-      '<a href = "'. $self->{'url'} . '">' .
-      $self->{'name'} .
-      '</a>';
-  } else {
-    die "Invalid format requested.";
-  }
-
-  return $link;
+  my @list = sort( keys( $sth->fetchall_hashref('name')));
+  return @list;
 }
 
+=head2 list_focus()
+
+Return all the names listed in the focus table, so you can discover the possible
+focus options.
+
+=cut
+
+sub list_focus
+{
+  my $self = shift;
+  my $sth = $DBH->prepare('SELECT name FROM focus');
+  $sth->execute();
+
+  my @list = sort( keys( $sth->fetchall_hashref('name')));
+  return @list;
+}
+
+=head2 list_exercises()
+
+Return names and ids from the exercise table, so you can discover possible
+exercise options.
+
+=cut
+
+sub list_exercises
+{
+  my $self = shift;
+  my $sth = $DBH->prepare('SELECT id, name FROM exercise');
+  $sth->execute();
+
+  my %list;
+  while ( my $record = $sth->fetchrow_hashref() )
+  {
+    $list{ $record->{'id'} } = $record->{'name'};
+  }
+
+  return %list;
+}
 
 1;
