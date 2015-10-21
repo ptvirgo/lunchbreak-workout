@@ -7,7 +7,7 @@
 */
 
 function exerciseURL( exercise ) {
-  if ( typeof( exercise.url ) === 'undefined' ) {
+  if ( typeof( exercise.url ) === 'undefined' || exercise.url === null ) {
     return exercise.name;
   } 
 
