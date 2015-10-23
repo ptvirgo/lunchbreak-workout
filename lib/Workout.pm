@@ -3,9 +3,6 @@ package Workout;
 use strict;
 use warnings FATAL => 'all' ;
 
-use Cwd 'abs_path';
-use DBD::SQLite;
-use File::Spec;
 require Workout::Exercise;
 
 =head1 FUNCTIONS
