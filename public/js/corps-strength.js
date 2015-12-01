@@ -15,47 +15,48 @@ function exerciseURL( exercise ) {
 }
 
 /*
-  displaySet( exercises );
+  listSet( exercises );
   Parameter:  An array of exercise objects
-  Returns: N/A
-  Effect: Update $('#workout').html with an ordered list of the exercises
+  Returns: HTML string of exercises
 */
 
-function displaySet( exercises ) {
+function listSet( exercises ) {
 
   var exerciseList = '';
 
+  if ( exercises.length === 3 ) {
+    exerciseList = '<ol>' +
+      '<li>Repeat 3x: ' + exerciseURL( exercises[0] ) + ' (15), ' +
+      exerciseURL( exercises[1] ) + ' (15), ' +
+      exerciseURL( exercises[2] ) + ' (50)' + '</ol>';
+    return exerciseList;
+  }
+
   if ( exercises.length === 6 ) {
     exerciseList = '<ol>' +
-                   '<li>' + exerciseURL( exercises[0] ) + ' (10 x 3 ) ' +
-                   exerciseURL( exercises[1] ) + ' (25 x 3) ' +
-                   exerciseURL( exercises[2] ) + ' (50 x 3)</li>' +
-                   '<li>' + exerciseURL( exercises[3] ) + ' (25 x 3 ) ' +
-                   exerciseURL( exercises[4] ) + ' (25 x 3) ' +
-                   exerciseURL( exercises[5] ) + ' (50 x 3)</li>' +
+                   '<li>Repeat 3x: ' + exerciseURL( exercises[0] ) + ' (10), ' +
+                   exerciseURL( exercises[1] ) + ' (25), ' +
+                   exerciseURL( exercises[2] ) + ' (50)</li>' +
+                   '<li>Repeat 3x: ' + exerciseURL( exercises[3] ) + ' (25), ' +
+                   exerciseURL( exercises[4] ) + ' (25), ' +
+                   exerciseURL( exercises[5] ) + ' (50)</li>' +
                    '</ol>';
-    $('#workout').html( exerciseList );
-    return;
+    return exerciseList;
   }
 
   if ( exercises.length === 8 ) {
     exerciseList = '<ol>' +
-                   '<li>' + exerciseURL( exercises[0] ) + ' (10 x 3), ' +
-                   'alternate with ' + exerciseURL( exercises[1] ) + ' ' +
-                   '(25 x 3)</li>' +
-                   '<li>' + exerciseURL( exercises[2] ) + ' (10-15 x 3), ' +
-                   'alternate with ' + exerciseURL( exercises[3] ) + ' ' +
-                   '(50 x 3)</li>' +
-                   '<li>' + exerciseURL( exercises[4] ) + ' (10-15 x 3), ' +
-                   'alternate with ' + exerciseURL( exercises[5] ) + ' ' +
-                   '(50 x 3)</li>' +
-                   '<li>' + exerciseURL( exercises[6] ) + ' (max x 2), ' +
-                   'alternate with ' + exerciseURL( exercises[7] ) + ' ' +
-                   '(50)</li>' +
+                   '<li>Repeat 3x: ' + exerciseURL( exercises[0] ) + ' (10), ' +
+                   exerciseURL( exercises[1] ) + ' ' + '(25)</li>' +
+                   '<li>Repeat 3x: ' + exerciseURL( exercises[2] ) + ' (10-15), ' +
+                   exerciseURL( exercises[3] ) + ' ' + '(50)</li>' +
+                   '<li>Repeat 3x: ' + exerciseURL( exercises[4] ) + ' (10-15), ' +
+                   exerciseURL( exercises[5] ) + ' (50)</li>' +
+                   '<li>' + exerciseURL( exercises[6] ) + ' (max, 2x), ' +
+                   exerciseURL( exercises[7] ) + ' ' + '(50)</li>' +
                    '</ol>';
 
-    $('#workout').html( exerciseList );
-    return;
+    return exerciseList;
   }
 
   var exerciseList = '<ol>';
@@ -63,54 +64,269 @@ function displaySet( exercises ) {
     exerciseList += '<li>' + exerciseURL( exercises[i] ) + '</li>';
   }
 
-  $('#workout').html( exerciseList );
+  return exerciseList;
 }
 
-$('#kettlebell').click( function() {
+function scaleSVG ( snap )
+{
+    var imageHeight = 64;
+    var imageWidth = 64;
+
+    var scale = 1;
+
+    var pageHeight = "innerHeight" in window
+        ? window.innerHeight
+        : document.documentElement.offsetHeight;
+
+    var pageWidth = "innerWidth" in window
+        ? window.innerHeight
+        : document.documentElement.offsetHeight;
+
+    if (pageHeight > 500)
+    {
+      pageHeight = 500;
+    }
+
+    if (pageWidth > 500)
+    {
+      pageWidth = 500;
+    }
+
+    scale = pageHeight / imageHeight;
+
+    var iFace = document.getElementById("interface");
+    iFace.style.height = ( imageHeight * scale ) + "px";
+    iFace.style.width = ( imageWidth * scale ) + "px";
+
+    var pageSize = new Snap.Matrix();
+    pageSize.scale( scale, scale, 0, 0)
+
+    snap.transform( pageSize );
+}
+
+function GoButton() {
+  this.clocks = [];
+  this.equipment = [];
+}
+
+GoButton.prototype.showPlan = function() {
+  var plan = this.activeClock.desc + ', ' + this.activeGear.desc + '.';
+  $('#workout-plan').text(plan);
+};
+
+GoButton.prototype.getWorkout = function() {
 
   var smallJoint = ( Math.floor( Math.random() * 3 ) < 1 )
     ? 'neck'
     : 'grip';
 
-  var focus = 'pull-up,push-up,wheel-house,abs,assist,abs,' + smallJoint + ',abs';
+  var bodyWeight = ( Math.floor( Math.random() * 3 ) < 1 )
+    ? 'wheel-house'
+    : 'push-up';
 
-  $.get( '/api/workout', { 'gear':'kettlebell,none', 'focus': focus },
+  var timeFocus = {
+    '1h': {
+      'default': 'pull-up,push-up,wheel-house,abs,assist,abs,' + smallJoint + ',abs', 
+      'none': 'pull-up,push-up,abs,wheel-house,wheel-house,abs'
+    },
+
+    '15m': {
+      'default': 'assist,' + bodyWeight + ',abs',
+      'none': 'push-up,wheel-house,abs'
+    }
+  };
+
+  time = this.activeClock.id;
+  gear = this.activeGear.id;
+
+  var workoutFocus;
+
+  workoutFocus = timeFocus[ time ][ gear ];
+
+  if ( typeof( workoutFocus ) === 'undefined')
+  {
+    workoutFocus = timeFocus[ time ]['default'];
+  }
+
+  $.get( '/api/workout', { 'gear': gear + ',none', 'focus': workoutFocus },
     function ( data, status ) {
-      var workout = $.parseJSON( data );
-      displaySet( workout );
+      var exercises = $.parseJSON( data );
+      var workout = listSet( exercises );
+      $('#content').html( workout );
   });
 
-  $('#title').text('Kettlebell Mission');
-  $('#content').text('Get your cardio up, then do your best to complete the exercise sets below.');
-});
+};
 
-$('#calisthenics').click( function() {
-  var focus = 'pull-up,push-up,abs,wheel-house,wheel-house,abs';
 
-  $.get( '/api/workout', { 'gear':'none', 'focus': focus },
-    function ( data, status ) {
-      var workout = $.parseJSON( data );
-      displaySet( workout );
-  });
+GoButton.prototype.addClock = function( clock, id, desc ) {
 
-  $('#title').text('Calisthenics Mission');
-  $('#content').text('Get your cardio up, then do your best to complete the exercise sets below.');
-});
+  clock.id = id;
+  clock.desc = desc;
 
-$('#dumbbell').click( function() {
+  clocks = this.clocks;
+  clocks.push( clock );
 
-  var smallJoint = ( Math.floor( Math.random() * 3 ) < 1 )
-    ? 'neck'
-    : 'grip';
+  showPlan = this.showPlan;
+  getWorkout = this.getWorkout;
 
-  var focus = 'pull-up,push-up,wheel-house,abs,assist,abs,' + smallJoint + ',abs';
+  var active = 0;
+  this.activeClock = clocks[active];
 
-  $.get( '/api/workout', { 'gear':'dumbbell,none', 'focus': focus },
-    function ( data, status ) {
-      var workout = $.parseJSON( data );
-      displaySet( workout );
-  });
+  var reset = new Snap.Matrix();
+  var buttonLeft = new Snap.Matrix();
+  buttonLeft.translate( 3, 1 ).scale( .2, .2 );
 
-  $('#title').text('Dumbbell Mission');
-  $('#content').text('Get your cardio up, then do your best to complete the exercise sets below.');
+  function iconify( clock ) {
+    clock.transform( buttonLeft );
+    clock.attr( {'display': 'inline' } );
+    clock.click( function(){
+      active = redraw();
+      showPlan();
+    });
+  }
+
+  function center( clock ) {
+    this.activeClock = clock;
+    clock.transform( reset );
+    clock.attr( {'display': 'inline' } );
+    clock.unclick();
+    clock.click( function() { getWorkout(); } );
+  }
+
+  function hide( clock ) {
+    clock.attr( {'display': 'none' } );
+    clock.unclick();
+  }
+
+  function redraw() {
+
+    next = ( active + 1 ) % clocks.length;
+
+    for ( i = 0; i < clocks.length; i++ ) {
+      hide( clocks[i] );
+    }
+
+    center( clocks[active] );
+    iconify( clocks[next] );
+
+    return next;
+  }
+
+  active = redraw();
+  return clocks;
+};
+
+GoButton.prototype.addEquipment = function( gear, id, desc, centerPosition, iconPosition ) {
+
+  gear.id = id;
+  gear.desc = desc;
+  gear.center = centerPosition;
+  gear.icon = iconPosition;
+
+  equipment = this.equipment;
+  equipment.push( gear );
+
+  var active = 0;
+  this.activeGear = equipment[active];
+
+  showPlan = this.showPlan;
+  getWorkout = this.getWorkout;
+
+  var centerStyle = {
+    'display': 'inline',
+    'fill': 'ffffff',
+    'fillOpacity': .97
+  };
+
+  var iconStyle = {
+    'display': 'inline',
+    'fill': '224466',
+    'fillOpacity': 1.00
+  };
+  
+  var hideStyle = {'display': 'none'};
+
+  function iconify( gear ) {
+    gear.transform( gear.icon );
+    gear.attr( iconStyle );
+    gear.click( function(){
+      active = redraw();
+      showPlan();
+    });
+  }
+
+  function center( gear ) {
+    this.activeGear = gear;
+    gear.transform( gear.center );
+    gear.attr( centerStyle );
+    gear.unclick();
+    gear.click( function() { getWorkout(); } );
+  }
+
+  function hide( gear ) {
+    gear.attr( hideStyle );
+    gear.unclick();
+  }
+
+  function redraw() {
+
+    next = ( active + 1 ) % equipment.length;
+
+    for ( i = 0; i < equipment.length; i++ ) {
+      hide( equipment[i] );
+    }
+
+    center( equipment[active] );
+    iconify( equipment[next] );
+    return next;
+  }
+
+  active = redraw();
+  return equipment;
+}
+
+var s = Snap('#interface');
+Snap.load('/images/icons.svg', function(iface) {
+
+  var g = s.g();
+  var button = new GoButton();
+
+  var clock1h = iface.select( '#clock1h' );
+  button.addClock( clock1h, '1h', 'Give me an hour' );
+
+  var clock15m = iface.select( '#clock15m' );
+  button.addClock( clock15m, '15m', 'About fifteen minutes' );
+
+  var buttonRight = new Snap.Matrix();
+  buttonRight.translate( 48, 0 ).scale( .2, .2 );
+
+  var centerIconA = new Snap.Matrix();
+  centerIconA.translate( 13, 13 ).scale( .6, .6 );
+
+  var centerIconB = new Snap.Matrix();
+  centerIconB.translate( 7, 9 ).scale( .7, .7 );
+
+  var kettlebell = iface.select( '#kettlebell' );
+  button.addEquipment( kettlebell, 'kettlebell', 'include kettlebell exercises',
+    centerIconA, buttonRight );
+
+  var dumbbell = iface.select( '#dumbbell' );
+  button.addEquipment( dumbbell, 'dumbbell', 'include dumbbell exercises',
+    centerIconA, buttonRight );
+
+  var arm = iface.select( '#arm' );
+  button.addEquipment( arm, 'none', 'only using bodyweight exercises',
+    centerIconB, buttonRight );
+
+  button.showPlan();
+
+  var icons = [clock1h, clock15m, kettlebell, dumbbell, arm];
+
+  for ( i=0; i < icons.length; i++ )
+  {
+    g.append( icons[i] );
+  }
+
+  s.append(g);
+  scaleSVG(s);
 });

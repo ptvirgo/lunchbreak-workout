@@ -21,7 +21,7 @@ get '/' => sub {
     title   => 'Random Workout Generator',
     content => '<p>Use the icons to choose your preferred workout equipment.</p>');
 
-  return $self->render( 'index' );
+  return $self->render( 'generator' );
 };
 
 get '/about' => sub {
@@ -353,37 +353,3 @@ __DATA__
 {
   "error": "<%= $error %>"
 }
-
-@@ index.html.ep
-<html>
-<head>
-  <title><%= $title %></title>
-  <link rel="stylesheet" type="text/css" href="css/screen.css" media="screen" >
-  <link rel="stylesheet" type="text/css" href="css/mobile.css" media="only
-screen and (max-device-width: 800px)" >
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-</head>
-<body>
-
-<section id="generator">
-<nav>
-  <img src="images/kettlebell.svg" id="kettlebell" alt="KettleBell" />
-  <img src="images/calisthenics.svg" id="calisthenics" alt="Calisthenics" />
-  <img src="images/dumbbell.svg" id="dumbbell" alt="DumbBell" />
-</nav>
-
-<h1 id="title"><%= $title %></h1>
-<section id="content"><%== $content %></section>
-<section id="workout"></section>
-<footer>
-  <nav>
-    <a href="/about">About</a> /
-    <a href="/api">API</a>
-  </nav>
-  <p>Copyright &copy; 2015 Pablo Virgo</p>
-</footer>
-
-<script src="js/corps-strength.js"></script>
-</section>
-</body>
-</html>
