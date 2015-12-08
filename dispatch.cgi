@@ -18,8 +18,8 @@ get '/' => sub {
   my $self = shift;
 
   $self->stash(
-    title   => 'Random Workout Generator',
-    content => '<p>Use the icons to choose your preferred workout equipment.</p>');
+    title   => 'Workout Generator',
+    content => '<p>Use the icons to choose your preferred workout length and equipment.</p>');
 
   return $self->render( 'generator' );
 };
@@ -28,18 +28,15 @@ get '/about' => sub {
   my $self = shift;
   my $title = 'About';
   my $content = <<"ABOUT"
-<h2>About</h2>
-<p>This is a simple tool to generate workout missions in accordance with
-the book <a href="http://corpsstrength.com">"Corps Strength"</a> by
-MGySgt Paul J. Roarke Jr.  It's deliberately a little sparse on the
-details and context because I am not affiliated with the author. I do
-recommend his book as an effective and accessible exercise plan.</p>
-<p>I wrote this tool in order to make my lunch breaks a little
-healthier, as well as to demonstrate what I've been learning about Perl,
-SQL, git, and now MojoLicious.</p>
-<p>Source code hosted on <a
-href="https://github.com/ptvirgo/corps-strength">github</a>.
-Improvements and solid suggestions are welcome.</p>
+<p>You're probably trying to balance a crazy schedule while wanting to improve your
+fitness.  I hope this tool helps you on your path.</p>
+
+<p>In addition to helping me stay in shape, I wrote this as an exercise to
+demonstrate what I've been learning about software development.  It's running
+with Perl, SQLite and Javascript.  I also wrote the HTML templates and CSS.  I
+make no claims to graphic design skills.  See my <a href="https://github.com/ptvirgo">github
+account</a> for further insight.</p>
+
 ABOUT
 ;
 
@@ -159,6 +156,48 @@ API
 
   return $self->render( 'index' );
 };
+
+get '/recommended_reading' => sub {
+  my $self = shift;
+  my $title = 'Recommended Reading';
+  my $content = <<"BOOK"
+<p>If you're working the kind of desk-jockey job that normally destroys a person's
+health, and a regular practice of going to the gym would steal too much precious
+time from family and friends, I recommend reading <a href="http://corpsstrength.com">"Corps
+Strength"</a> by MGySgt Paul J. Roarke Jr.</p>
+
+<p>Roarke drew on years of experience training Marines to develop an extremely
+effective, simple fitness program.  It can be followed with only a few hours a
+week in-any environment you are likely to encounter.  His no-nonsense focus on
+working-fitness emphasizes that anyone can have health, strength, and endurance
+to spare without having to turn exercise into a part-time career.</p>
+
+<p>I've been working in a career that normally destroys people's physical health.
+The stereotypical IT guy needs to lose over a hundred pounds and struggles with
+two flights of stairs.  We've all seen this, in almost any industry.
+Professionals aren't lazy.  We work crazy hours and need what little time and
+energy is left to touch base with the people we love.</p>
+
+<p>Roarke's book gave me a solution that I could implement on 2 - 3 lunch breaks
+per week.  Thanks to his routine, I'm not worrying that I might die of a heart
+attack in my 40s.  I'm participating in the occasional Spartan Race. I'm enjoying
+the fact that my wife tells my I'm one of the strongest and most attractive
+people she's met. I'm reminding friends and family that fitness is available to
+anyone.</p>
+
+<p>I hope that by sharing this little tool I've can encouraged you to build some
+health and strength into your life.  You don't have to get sucked into a
+constant state of stress and exhaustion.  Grab a copy of Roarke's book, swing
+back here when you've got a spare lunch break, and stay strong.</p>
+BOOK
+;
+
+  $self->stash( title => $title, content => $content );
+
+  return $self->render( 'index' );
+
+};
+
 
 get '/api/exercise' => sub {
   my $self = shift;

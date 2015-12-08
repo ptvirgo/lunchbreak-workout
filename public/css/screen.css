@@ -39,6 +39,15 @@ a:hover {
   text-decoration: underline;
 }
 
+code {
+  background-color: #fff;
+  border: 1px dotted #246;
+  display: block;
+  font-family: monospace;
+  margin: 1em 3ex;
+  padding: .5em 1ex;
+}
+
 footer nav {
   background-color: #246;
   border-radius: 0 0 .5em .5em;
