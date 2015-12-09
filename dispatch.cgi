@@ -32,11 +32,13 @@ get '/about' => sub {
 fitness.  I hope this tool helps you on your path.</p>
 
 <p>In addition to helping me stay in shape, I wrote this as an exercise to
-demonstrate what I've been learning about software development.  It's running
-with Perl, SQLite and Javascript.  I also wrote the HTML templates and CSS.  I
-make no claims to graphic design skills.  See my <a href="https://github.com/ptvirgo">github
-account</a> for further insight.</p>
+demonstrate what I've been learning about software development. It's running
+with Perl, SQLite and Javascript.  I also wrote the HTML templates and CSS.
+I make no claims to graphic design skills.</p>
 
+<p>There are probably bugs, especially since this is my first attempt at releasing
+software into the wild.  If you'd care to provide feedback or help me make
+improvements, you can do so <a href="https://github.com/ptvirgo">on github</a>.</p>
 ABOUT
 ;
 
