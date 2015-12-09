@@ -1,7 +1,0 @@
-- Reword workout descriptions
- 
-  Repeat 3x: a, b c
-  Repeat 3x: d, e, f
-  ...
-
-- Add 'resources' page
