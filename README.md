@@ -1,21 +1,16 @@
 corps-strength
 ==============
 
-A simple tool to generate workout missions in accordance with the book "Corps
+A simple tool to generate workout missions in the spirit of  the book "Corps
 Strength" by MGySgt Paul J. Roarke Jr. See www.corpsstrength.com for further
 information.
 
 # About
 
-This is a simple tool to generate workout missions in accordance with
-the book "Corps Strength" by MGySgt Paul J. Roarke Jr. It's deliberately
-a little sparse on the details and context because I am not affiliated
-with the author. I do recommend his book as an effective and accessible
-exercise plan.
-
 I wrote this tool in order to make my lunch breaks a little healthier,
-as well as to demonstrate what I've been learning about Perl, SQL, git,
-and now MojoLicious.
+as well as to demonstrate what I've been learning about Perl, SQL, Javascript
+and git.
+
 
 # Setup notes
 
