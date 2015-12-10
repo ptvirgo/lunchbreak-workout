@@ -1,4 +1,4 @@
-corps-strength
+lunchbreak-workout
 ==============
 
 A simple tool to generate workout missions in the spirit of  the book "Corps

@@ -10,4 +10,5 @@ I make no claims to graphic design skills.
 
 There are probably bugs, especially since this is my first attempt at releasing
 software into the wild.  If you'd care to provide feedback or help me make
-improvements, you can do so [on github](https://github.com/ptvirgo).
+improvements, you can do so [on
+github](https://github.com/ptvirgo/lunchbreak-workout).

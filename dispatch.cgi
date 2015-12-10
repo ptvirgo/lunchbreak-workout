@@ -38,7 +38,8 @@ I make no claims to graphic design skills.</p>
 
 <p>There are probably bugs, especially since this is my first attempt at releasing
 software into the wild.  If you'd care to provide feedback or help me make
-improvements, you can do so <a href="https://github.com/ptvirgo">on github</a>.</p>
+improvements, you can do so <a href="https://github.com/ptvirgo/lunchbreak-workout">on
+github</a>.</p>
 ABOUT
 ;
 
