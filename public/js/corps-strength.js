@@ -67,41 +67,21 @@ function listSet( exercises ) {
   return exerciseList;
 }
 
-function scaleSVG ( snap )
+function reScale( base, max )
 {
-    var imageHeight = 64;
-    var imageWidth = 64;
-
     var scale = 1;
-
-    var pageHeight = "innerHeight" in window
-        ? window.innerHeight
-        : document.documentElement.offsetHeight;
 
     var pageWidth = "innerWidth" in window
         ? window.innerHeight
         : document.documentElement.offsetHeight;
 
-    if (pageHeight > 500)
+    if (pageWidth > max)
     {
-      pageHeight = 500;
+      pageWidth = max;
     }
 
-    if (pageWidth > 500)
-    {
-      pageWidth = 500;
-    }
-
-    scale = pageHeight / imageHeight;
-
-    var iFace = document.getElementById("interface");
-    iFace.style.height = ( imageHeight * scale ) + "px";
-    iFace.style.width = ( imageWidth * scale ) + "px";
-
-    var pageSize = new Snap.Matrix();
-    pageSize.scale( scale, scale, 0, 0)
-
-    snap.transform( pageSize );
+    scale = pageWidth / base;
+    return scale;
 }
 
 function GoButton() {
@@ -327,6 +307,16 @@ Snap.load('/images/icons.svg', function(iface) {
     g.append( icons[i] );
   }
 
+  var scale = reScale(64, 500);
+
+  var iFace = document.getElementById("interface");
+  iFace.style.height = ( 64 * scale ) + "px";
+  iFace.style.width = ( 64 * scale ) + "px";
+
+  var pageSize = new Snap.Matrix();
+  pageSize.scale( scale, scale, 0, 0)
+
+  g.transform( pageSize );
+
   s.append(g);
-  scaleSVG(s);
 });
