@@ -3,7 +3,7 @@ lunchbreak-workout
 
 A simple tool to generate workout missions in the spirit of  the book "Corps
 Strength" by MGySgt Paul J. Roarke Jr. See www.corpsstrength.com for further
-information.
+information.  A live demo is hosted at www.lunchbreak-workout.com.
 
 # About
 
