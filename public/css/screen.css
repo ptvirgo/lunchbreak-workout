@@ -1,0 +1,92 @@
+/*
+dark: 224466
+light: aaeedd
+*/
+
+body {
+  background-color: #f8fff8;
+  color: #444;
+  font-family: sans-serif;
+  font-size: medium;
+  font-weight: normal;
+}
+
+h2, h3, p {
+  margin: 0 0 1em 0;
+}
+
+h1 {
+  background-color: #246;
+  border-radius: .5em .5em 0 0;
+  color: #f8fff8;
+  margin: 0;
+  padding: 0 2ex;
+  text-align: center;
+}
+
+a {
+  color: #246;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #046;
+}
+
+a:hover {
+  color: #aed;
+  text-decoration: underline;
+}
+
+code {
+  background-color: #fff;
+  border: 1px dotted #246;
+  display: block;
+  font-family: monospace;
+  margin: 1em 3ex;
+  padding: .5em 1ex;
+}
+
+footer nav {
+  background-color: #246;
+  border-radius: 0 0 .5em .5em;
+  color: #f8fff8;
+  margin: 0;
+  padding: 0 2ex;
+}
+
+nav a {
+  color: #f8fff8;
+}
+
+nav a:visited {
+  color: #f8fff8;
+}
+
+nav a:hover {
+  color: #aed;
+}
+
+footer p {
+  text-align: right;
+}
+
+#content {
+  border-left: 3px solid #246;
+  border-right: 3px solid #246;
+  margin: 0;
+  padding: 1em 2ex;
+}
+
+#generator {
+  max-width: 80ex;
+  margin: 0 auto;
+}
+
+svg#interface {
+  height: 64;
+  width: 64;
+  display: block;
+  margin: 0 auto 1em auto;
+}

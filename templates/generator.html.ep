@@ -1,0 +1,31 @@
+<html>
+<head>
+  <title><%= $title %></title>
+  <link rel="stylesheet" type="text/css" href="css/screen.css" media="screen" >
+  <link rel="stylesheet" type="text/css" href="css/mobile.css" media="only
+screen and (max-device-width: 800px)" >
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="/js/external/snap.svg-min.js"></script>
+</head>
+<body>
+
+<section id="generator">
+<svg id="interface" alt="Interface" ></svg>
+
+<h1 id="title"><span id="workout-plan"><%= $title %></span></h1>
+<section id="content"><%== $content %></section>
+
+<footer>
+  <nav>
+    <a href="/">Workout Generator</a> /
+    <a href="/about">About</a> /
+    <a href="/api">API</a> /
+    <a href="/recommended_reading">Recommended Reading</a>
+  </nav>
+  <p>Copyright &copy; 2015 Pablo Virgo</p>
+</footer>
+
+<script src="js/corps-strength.js"></script>
+</section>
+</body>
+</html>
