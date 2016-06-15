@@ -19,7 +19,7 @@ screen and (max-device-width: 800px)" >
     <a href="/api">API</a> /
     <a href="/recommended_reading">Recommended Reading</a>
   </nav>
-  <p>Copyright &copy; 2015 Pablo Virgo</p>
+  <p>Copyright &copy; 2016 Pablo Virgo</p>
 </footer>
 
 </section>
