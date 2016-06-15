@@ -11,7 +11,7 @@ function exerciseURL( exercise ) {
     return exercise.name;
   } 
 
-  return '<a href="' + exercise.url + '">' + exercise.name + '</a>';
+  return '<a href="' + exercise.url + '"  target="_blank">' + exercise.name + '</a>';
 }
 
 /*
